@@ -1,20 +1,35 @@
 # PHP-Packer-Generator
 
-这个包是PHP-Packer项目的代码生成组件，负责代码的合并、优化和格式控制。
+[![Latest Version](https://img.shields.io/packagist/v/tourze/php-packer-generator.svg)](https://packagist.org/packages/tourze/php-packer-generator)
+[![Build Status](https://github.com/tourze/php-packer-generator/workflows/CI/badge.svg)](https://github.com/tourze/php-packer-generator/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-## 主要功能
+The **PHP-Packer-Generator** is a code generation component for the PHP-Packer project, responsible for merging, optimizing, and formatting PHP code.
 
-- **代码合并**: 将多个PHP文件合并成一个单一文件
-- **代码优化**: 支持代码精简、注释保留等优化功能
-- **输出格式控制**: 控制生成代码的格式和风格
+## Features
 
-## 安装
+- **Code Merging**: Merge multiple PHP files into a single file.
+- **Code Optimization**: Support for code minification, comment preservation, and more.
+- **Output Formatting**: Control the formatting and style of the generated code.
+- **Resource Embedding**: Generate code to embed resource files.
+- **Highly Extensible**: Support custom code optimizers and formatters.
+
+## Installation
+
+Requirements:
+
+- PHP >= 8.1
+- Composer
+
+Install via Composer:
 
 ```bash
 composer require tourze/php-packer-generator
 ```
 
-## 使用方法
+## Quick Start
+
+Basic usage example:
 
 ```php
 use PhpPacker\Generator\CodeGenerator;
@@ -22,22 +37,22 @@ use PhpPacker\Generator\Config\GeneratorConfig;
 use PhpPacker\Ast\AstManager;
 use Psr\Log\LoggerInterface;
 
-// 创建配置
+// Create config
 $config = new GeneratorConfig();
 $config->setPreserveComments(true);
 $config->setRemoveNamespace(false);
 
-// 创建代码生成器
-$astManager = new AstManager($logger);
+// Create code generator
+$astManager = new AstManager($logger); // $logger must implement LoggerInterface
 $generator = new CodeGenerator($config, $astManager, $logger);
 
-// 生成代码
+// Generate code
 $code = $generator->generate($astManager, $phpFiles, $resourceFiles);
 ```
 
-## 自定义代码生成
+## Custom Code Generation
 
-通过实现自定义的`CodeOptimizer`和`CodeFormatter`，可以扩展代码生成的行为:
+You can extend the code generation process by implementing your own `CodeOptimizer` and `CodeFormatter`:
 
 ```php
 use PhpPacker\Generator\Optimizer\CustomOptimizer;
@@ -48,3 +63,34 @@ $formatter = new CustomFormatter();
 
 $generator = new CodeGenerator($config, $astManager, $logger, $optimizer, $formatter);
 ```
+
+## Configuration
+
+The `GeneratorConfig` class provides options to control code generation:
+
+- `setPreserveComments(bool $preserve)`: Whether to keep comments.
+- `setRemoveNamespace(bool $remove)`: Whether to remove namespaces (useful for KPHP compatibility).
+- `setOptimizeCode(bool $optimize)`: Enable/disable code optimization.
+- `setLineEnding(?string $ending)`: Set custom line ending (e.g., `"\r\n"`).
+- `setIndentationSize(int $size)`: Set indentation size.
+- `setIndentationChar(string $char)`: Set indentation character (e.g., space or tab).
+
+## Advanced Usage
+
+- **Resource Embedding**: Use `ResourceHolderGenerator` to generate code for resource files.
+- **Custom Visitors**: Implement your own AST visitors for advanced code transformations.
+
+## Contribution Guide
+
+- Please submit issues and pull requests via GitHub.
+- Follow PSR code style guidelines.
+- Ensure all tests pass (`phpunit`).
+- Add tests for new features.
+
+## License
+
+MIT License. See [LICENSE](LICENSE) for details.
+
+## Changelog
+
+See [Releases](https://github.com/tourze/php-packer-generator/releases) for version history and upgrade notes.
